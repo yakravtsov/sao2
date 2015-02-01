@@ -2,40 +2,21 @@
 
 namespace app\controllers;
 
-use app\models\Company;
 use Yii;
-use app\models\User;
-use app\models\search\UserSearch;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\helpers\VarDumper;
+use app\models\Project;
+use app\models\search\ProjectsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UsersController implements the CRUD actions for User model.
+ * ProjectsController implements the CRUD actions for Project model.
  */
-class UsersController extends Controller
+class ProjectsController extends Controller
 {
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-//                'only' => ['logout', 'about'],
-                /*'denyCallback' => function ($rule, $action) {
-                    throw new \Exception('You are not allowed to access this page');
-                },*/
-                'rules' => [
-                    [
-//                        'actions' => ['*'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -46,34 +27,22 @@ class UsersController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all Project models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new ProjectsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-
-        /*$dataProvider = new ActiveDataProvider([
-            'query' => User::find()
-        ]);*/
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		$authors = ArrayHelper::map(User::find()->all(), 'id', 'phio');
-        $mo = new User;
-        $statuses = $mo->getStatusValues();
-        $roles = $mo->getRoleValues();
-
-		return $this->render('index', [
-            'dataProvider' => $dataProvider,
+        return $this->render('index', [
             'searchModel' => $searchModel,
-			'authors'=> $authors,
-            'statuses' => $statuses,
-            'roles' => $roles
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single User model.
+     * Displays a single Project model.
      * @param integer $id
      * @return mixed
      */
@@ -85,27 +54,25 @@ class UsersController extends Controller
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new Project model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-
     public function actionCreate()
     {
-        $model = new User();
-        $model->scenario = 'signup';
+        $model = new Project();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->project_id]);
         } else {
             return $this->render('create', [
-                'model' => $model
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing Project model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -113,10 +80,9 @@ class UsersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = 'signup';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->project_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -125,7 +91,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Project model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -138,15 +104,15 @@ class UsersController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the Project model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return Project the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = Project::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
