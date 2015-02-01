@@ -20,7 +20,6 @@ WHERE (rolname = 'pgsql');
 -- Dumped from database version 9.3.0
 -- Dumped by pg_dump version 9.4beta1
 -- Started on 2015-02-01 19:20:2147483647
-SET
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -234,6 +233,7 @@ CREATE TABLE project (
     report_type integer DEFAULT 0 NOT NULL,
     description text,
     notify integer DEFAULT 0 NOT NULL
+
 )
 INHERITS (history);
 

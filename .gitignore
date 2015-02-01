@@ -1,2 +1,5 @@
+.idea/.*
 .idea
 motasystems
+motasystems/.*
+*.lock

@@ -21,6 +21,7 @@
         "creocoder/yii2-nested-sets": "dev-master"
     },
     "require-dev": {
+        "angular/angular.js": "*",
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",

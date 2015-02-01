@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use app\components\AuthorBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "project".
@@ -33,10 +36,27 @@ class Project extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created', 'updated', 'date_start', 'date_end'], 'safe'],
-            [['author_id'], 'required'],
-            [['author_id', 'report_type', 'notify'], 'integer'],
+            [['date_start', 'date_end'], 'safe'],
+            [['report_type', 'notify'], 'integer'],
             [['description'], 'string']
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors() {
+        return [
+            [
+                'class'              => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created',
+                'updatedAtAttribute' => 'updated',
+                'value'              => new Expression('NOW()'),
+            ],
+            [
+                'class'     => AuthorBehavior::className(),
+                'attribute' => 'author_id',
+            ]
         ];
     }
 

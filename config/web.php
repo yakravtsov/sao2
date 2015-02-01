@@ -64,6 +64,14 @@ $config = [
 		],
         'db' => require(__DIR__ . '/db.php'),
     ],
+    /*'assetManager' => [
+        'bundles' => [
+            'yii\web\AngularAsset' => [
+                'sourcePath' => null,
+                'js' => ['//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js'] // we'll take Angular from CDN
+            ],
+        ],
+    ],*/
 //    'modules'=> require(__DIR__ . '/modules.php'),
     'params' => $params,
 ];
