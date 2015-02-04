@@ -53,9 +53,12 @@ class TestController extends Controller
      */
     public function actionView($id)
     {
+        $test = $this->findModel($id);
+        $question = new Question();
+        $question->test_id = $test->test_id;
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'questionModel'=>new Question()
+            'model' => $test,
+            'questionModel'=> $question
         ]);
     }
 

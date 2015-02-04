@@ -3,3 +3,5 @@
 motasystems
 motasystems/.*
 *.lock
+controllers/UniController.php
+views/uni

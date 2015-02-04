@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="test-form" ng-app="sao" ng-controller="TestController" ng-init='initModel(<?=json_encode($model->toArray())?>)'>
-<input type="text" ng-model="test.name"/>
+<!--<input type="text" ng-model="test.name"/>-->
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 255, 'ng-model'=>'test.name']) ?>

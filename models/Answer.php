@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "answers".
+ * This is the model class for table "answer".
  *
  * @property string $created
  * @property string $updated
@@ -20,14 +20,14 @@ use Yii;
  *
  * @property Question $question
  */
-class Answers extends \yii\db\ActiveRecord
+class Answer extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'answers';
+        return 'answer';
     }
 
     /**
@@ -69,4 +69,5 @@ class Answers extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Question::className(), ['question_id' => 'question_id']);
     }
+
 }

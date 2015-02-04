@@ -14,7 +14,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'type')->textInput() ?>
+    <?= $form->field($model, 'type')->dropDownList($model->getTypes()) ?>
+
+    <?= $form->field($model, 'test_id')->hiddenInput()->label(false) ?>
 
 <!--    --><?//= $form->field($model, 'root')->textInput() ?>
 <!---->

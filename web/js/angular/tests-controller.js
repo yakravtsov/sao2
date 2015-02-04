@@ -1,6 +1,6 @@
 var sao = angular.module('sao', [])/*.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
-})*/;
+})*/
     sao.controller('TestController',
     ['$scope', '$http',
         function ($scope, $http) {

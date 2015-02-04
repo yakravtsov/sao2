@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="test-view" ng-app="sao" ng-controller="TestController"
      ng-init='initModel(<?= json_encode($model->toArray()) ?>)'>
-    <h1 style="color: red" ng-bind="test|json"></h1>
+<!--    <h1 style="color: red" ng-bind="test|json"></h1>-->
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -43,10 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);
 
+
     Modal::begin([
         'header' => '<h2 ng-bind="modalHeader"></h2>',
         'toggleButton' => [
-            'tag' => 'button',
+            'tag' => 'a',
             'class' => 'btn btn-lg btn-block btn-info',
             'label' => 'Добавить вопрос',
             'ng-click' => 'newQuestion()'
