@@ -18,10 +18,11 @@
         "yiisoft/yii2": "*",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-        "creocoder/yii2-nested-sets": "dev-master"
+        "creocoder/yii2-nested-sets": "dev-master",
+        "kartik-v/yii2-sortable": "*"
     },
     "require-dev": {
-        "angular/angular.js": "*",
+
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",

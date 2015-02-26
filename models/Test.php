@@ -74,15 +74,15 @@ class Test extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'created' => 'Created',
-            'updated' => 'Updated',
-            'author_id' => 'Author ID',
-            'test_id' => 'Test ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'order' => 'Order',
-            'settings' => 'Settings',
-            'deadline' => 'Deadline',
+            'created' => 'Создан',
+            'updated' => 'Редактирован',
+            'author_id' => 'Автор',
+            'test_id' => 'ID',
+            'name' => 'Название',
+            'description' => 'Описание',
+            'order' => 'Порядок вопросов',
+            'settings' => 'Настройки',
+            'deadline' => 'Время в минутах',
         ];
     }
 
@@ -108,5 +108,18 @@ class Test extends \yii\db\ActiveRecord
     public function getScales()
     {
         return $this->hasMany(Scale::className(), ['test_id' => 'test_id']);
+    }
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+    public function getAuthor()
+    {
+        return $this->hasOne(User::className(), ['user_id' => 'author_id']);
+    }
+
+    public function getAuthorName()
+    {
+        return $this->getAuthor()['phio'];
     }
 }

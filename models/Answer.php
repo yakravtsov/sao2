@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use app\components\AuthorBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "answer".
@@ -29,6 +32,24 @@ class Answer extends \yii\db\ActiveRecord
     {
         return 'answer';
     }
+
+	/**
+	 * @inheritdoc
+	 */
+	public function behaviors() {
+		return [
+			[
+				'class'              => TimestampBehavior::className(),
+				'createdAtAttribute' => 'created',
+				'updatedAtAttribute' => 'updated',
+				'value'              => new Expression('NOW()'),
+			],
+			[
+				'class'     => AuthorBehavior::className(),
+				'attribute' => 'author_id',
+			]
+		];
+	}
 
     /**
      * @inheritdoc
@@ -69,5 +90,9 @@ class Answer extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Question::className(), ['question_id' => 'question_id']);
     }
+
+	public function getEffects(){
+		return $this->hasMany(AnswerScale::className(), ['answer_id'=>'answer_id']);
+	}
 
 }

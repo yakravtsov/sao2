@@ -9,27 +9,72 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="question-form">
+	<?php $form = ActiveForm::begin(['action' => $model->isNewRecord ? '/question/create' : '/question/update']); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+	<?= $form->field($model, 'name')->textarea(['maxlength' => 255, 'ng-model' => 'question.name']) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
+	<?= $form->field($model, 'type')->dropDownList($model->getTypes(), ['ng-model' => 'question.type']) ?>
 
-    <?= $form->field($model, 'type')->dropDownList($model->getTypes()) ?>
+	<?
+	if($model->isNewRecord){
+		echo $form->field($model, 'test_id')->hiddenInput(['value'=>$test_id])->label(false);
+	} else {
+		echo $form->field($model, 'test_id')->hiddenInput()->label(false);
+	}
+	?>
 
-    <?= $form->field($model, 'test_id')->hiddenInput()->label(false) ?>
 
-<!--    --><?//= $form->field($model, 'root')->textInput() ?>
-<!---->
-<!--    --><?//= $form->field($model, 'lft')->textInput() ?>
-<!---->
-<!--    --><?//= $form->field($model, 'rgt')->textInput() ?>
+	<!--    --><? //= $form->field($model, 'root')->textInput() ?>
+	<!---->
+	<!--    --><? //= $form->field($model, 'lft')->textInput() ?>
+	<!---->
+	<!--    --><? //= $form->field($model, 'rgt')->textInput() ?>
 
-<!--    --><?//= $form->field($model, 'depth')->textInput() ?>
+	<!--    --><? //= $form->field($model, 'depth')->textInput() ?>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+	<h3>Варианты ответов</h3>
 
-    <?php ActiveForm::end(); ?>
+	<div class="row" ng-repeat="answer in question.answers">
+		<div class="form-group col-xs-10">
+			<?= Html::tag('input', '', ['class' => 'form-control', 'value' => 'Первый ответ','placeholder'=>'Введите текст ответа', 'name'=>'answers[]', 'ng-model'=>'answer.name']); ?>
+		</div>
+		<div class="form-group col-xs-2">
+			<a class="btn btn-info" data-toggle="collapse" href="#scales">
+				<i class="glyphicon glyphicon-tasks"></i>
+			</a>
+
+			<a class="btn btn-danger" href="#" ng-click="question.removeAnswer(answer)">
+				<i class="glyphicon glyphicon-remove"></i>
+			</a>
+		</div>
+
+		<div class="collapse col-xs-12" id="scales">
+			<div class="form-horizontal">
+				<div class="form-group" ng-repeat="scale in scales">
+					<label class="col-sm-2 control-label" ng-bind="scale.name"></label>
+					<div class="col-sm-1">
+						<input type="text" class="form-control input-sm" ng-model="answer.scaleEffects[scale.scale_id]">
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="form-group">
+		<?= Html::tag('a', Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']) . ' Добавить вариант ответа', ['class' => '', 'href' => '#', 'ng-click'=>'question.newAnswer()']) ?>
+	</div>
+
+	<hr>
+	<div class="text-center">
+		<div class="form-group">
+			<?= Html::button($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'ng-click'=>'question.save()']) ?>
+<!--			--><?//= Html::submitButton($model->isNewRecord ? Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Сохранить вопрос' : 'Сохранить изменения', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'ng-click' => 'saveQuestion()']) ?>
+		</div>
+	</div>
+
+
+
+	<?php ActiveForm::end(); ?>
 
 </div>

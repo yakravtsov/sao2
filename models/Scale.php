@@ -46,13 +46,13 @@ class Scale extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'created' => 'Created',
-            'updated' => 'Updated',
-            'author_id' => 'Author ID',
-            'scale_id' => 'Scale ID',
-            'name' => 'Name',
-            'test_id' => 'Test ID',
-            'default' => 'Default',
+            'created' => 'Создана',
+            'updated' => 'Редактирована',
+            'author_id' => 'Автор',
+            'scale_id' => 'ID',
+            'name' => 'Название',
+            'test_id' => 'ID теста',
+            'default' => 'Значение по умолчанию',
         ];
     }
 

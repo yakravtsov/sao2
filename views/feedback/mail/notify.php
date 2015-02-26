@@ -1,25 +1,18 @@
 <table width="600" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
     <tr><td>Здравствуйте, <?=$model->name?>!</td></tr>
-    <tr><td><br /></td></tr>
+	<tr><td><br /></td></tr>
+	<tr>
+		<td>
+			Вы оставили запрос в техподдержку. Специалисты ответят на Ваш запрос в течение 24 часов. Если Вы не обнаружите письма, пожалуйста, проверьте папку «Спам».
+		</td>
+	</tr>
+	<tr><td><br /></td></tr>
     <tr><td>Вы писали:</td></tr>
     <tr>
         <td>
             <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                 <tr><td style="border-left:2px solid #07206f;padding-left:5px;"><?=$model->text?></td></tr>
             </table>
-        </td>
-    </tr>
-    <tr><td><br /></td></tr>
-    <tr>
-        <td>
-            <?=$model->text?>
-        </td>
-    </tr>
-    <tr><td><br /></td></tr>
-    <tr>
-        <td>
-            Если у вас остались вопросы, вы можете задать их повторно, заполнив форму по ссылке:<br />
-            <a href="//sao2.mota-systems.ru/feedback/add" target="_blank">Задать новый вопрос</a>
         </td>
     </tr>
     <tr><td><br /><br /></td></tr>

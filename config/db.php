@@ -2,10 +2,11 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=localhost;dbname=saonline',
+    'dsn' => 'pgsql:host=62.109.7.245;dbname=saonline',
     'username' => 'saonline',
     'password' => '0000',
     'charset' => 'utf8',
+	'enableSchemaCache'=>true,
     'schemaMap' => [
         'pgsql'=> [
             'class'=>'yii\db\pgsql\Schema',

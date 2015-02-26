@@ -3,13 +3,16 @@
 namespace app\controllers;
 
 use app\models\Question;
+use app\models\Scale;
 use Yii;
 use app\models\Test;
 use app\models\search\TestSearch;
+use yii\db\ActiveQuery;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * TestController implements the CRUD actions for Test model.
@@ -54,11 +57,18 @@ class TestController extends Controller
     public function actionView($id)
     {
         $test = $this->findModel($id);
-        $question = new Question();
-        $question->test_id = $test->test_id;
+		$question = new Question();
+        $questions = Question::find()->where(['test_id'=>$id])->asArray()->All();
+
+        $scale = new Scale();
+        $scales = $scale->find()->where(['test_id'=>$id])->asArray()->All();
+
         return $this->render('view', [
             'model' => $test,
-            'questionModel'=> $question
+            'questionModel'=> $question,
+            'questions' => $questions,
+            'scales' => $scales,
+            'scalesModel' => $scale,
         ]);
     }
 
@@ -71,7 +81,12 @@ class TestController extends Controller
     {
         $model = new Test();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+			$model->save();
+			die(var_dump($_POST));
+			foreach(Yii::$app->request->post("effect") as $effect) {
+				die($effect);
+			}
             return $this->redirect(['view', 'id' => $model->test_id]);
         } else {
             return $this->render('create', [
@@ -94,8 +109,10 @@ class TestController extends Controller
 //        die(var_dump($model->load(['Test' => $data])));
         if ($data && $model->load($data)) {
             if (!$model->save()) {
-                echo JSON::encode($model->getErrors());
-                die();
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                $model->refresh();
+
+                return $model->validate();
             } else {
                 return $this->redirect(['view', 'id' => $model->test_id]);
             }
@@ -130,7 +147,8 @@ class TestController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Test::findOne($id)) !== null) {
+		$model = Test::find($id)->joinWith(['questions.answers.effects', 'scales', 'author'])->asArray()->one();
+		if ($model !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

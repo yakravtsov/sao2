@@ -57,13 +57,13 @@ $this->params['breadcrumbs'][] = $this->title;
 						 ],
 						 //'created',
 						 //'updated',
-						 [
-							'attribute' => 'author_id',
-							 'value'=>function($data) {
-									 return $data->getAuthor()['phio'];
-								 },
-							 'filter' => $authors
-						 ],
+//						 [
+//							'attribute' => 'author_id',
+//							 'value'=>function($data) {
+//									 return $data->getAuthor()['phio'];
+//								 },
+//							 'filter' => $authors
+//						 ],
 						 //'parent_id',
 						 // 'last_login',
 						 [

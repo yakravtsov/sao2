@@ -9,17 +9,17 @@
             </table>
         </td>
     </tr>
+	<tr><td><br /></td></tr>
+	<tr>
+		<td>
+			Если у вас остались вопросы, вы можете задать их повторно, заполнив форму по ссылке:<br />
+			<a href="//sao2.mota-systems.ru/feedback/add" target="_blank">Задать новый вопрос</a>
+		</td>
+	</tr>
     <tr><td><br /></td></tr>
     <tr>
         <td>
-            <?=$model->text?>
-        </td>
-    </tr>
-    <tr><td><br /></td></tr>
-    <tr>
-        <td>
-            Если у вас остались вопросы, вы можете задать их повторно, заполнив форму по ссылке:<br />
-            <a href="//sao2.mota-systems.ru/feedback/add" target="_blank">Задать новый вопрос</a>
+            <?=$answer?>
         </td>
     </tr>
     <tr><td><br /><br /></td></tr>

@@ -22,6 +22,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'deadline')->textInput(['ng-model'=>'test.deadline']) ?>
 
+    <div class="form-group">
+        <?//= Html::button($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'ng-click'=>'saveQuestion()']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
     <?php ActiveForm::end(); ?>
 
 </div>

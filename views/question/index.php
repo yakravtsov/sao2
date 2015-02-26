@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'question_id',
             'name',
             // 'type',
-            // 'test_id',
+             'test_id',
             // 'root',
             // 'lft',
             // 'rgt',

@@ -2,8 +2,11 @@
 
 namespace app\models;
 
+use app\components\AuthorBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "question".
@@ -43,11 +46,28 @@ class Question extends ActiveRecord
 	/**
 	 * @inheritdoc
 	 */
+	public function behaviors() {
+		return [
+			[
+				'class'              => TimestampBehavior::className(),
+				'createdAtAttribute' => 'created',
+				'updatedAtAttribute' => 'updated',
+				'value'              => new Expression('NOW()'),
+			],
+			[
+				'class'     => AuthorBehavior::className(),
+				'attribute' => 'author_id',
+			]
+		];
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function rules() {
 		return [
-			[['created', 'updated'], 'safe'],
-			[['author_id', 'lft', 'rgt', 'depth'], 'required'],
-			[['author_id', 'type', 'test_id', 'root', 'lft', 'rgt', 'depth'], 'integer'],
+//			[['lft', 'rgt', 'depth'], 'required'],
+			[['type', 'test_id', 'root', 'lft', 'rgt', 'depth'], 'integer'],
 			[['name'], 'string', 'max' => 255]
 		];
 	}
@@ -57,13 +77,13 @@ class Question extends ActiveRecord
 	 */
 	public function attributeLabels() {
 		return [
-			'created'     => 'Created',
-			'updated'     => 'Updated',
-			'author_id'   => 'Author ID',
-			'question_id' => 'Question ID',
-			'name'        => 'Name',
-			'type'        => 'Type',
-			'test_id'     => 'Test ID',
+			'created'     => 'Создан',
+			'updated'     => 'Изменен',
+			'author_id'   => 'Автор',
+			'question_id' => 'ID',
+			'name'        => 'Текст вопроса',
+			'type'        => 'Тип вопроса',
+			'test_id'     => 'ID теста',
 			'root'        => 'Root',
 			'lft'         => 'Lft',
 			'rgt'         => 'Rgt',
@@ -82,7 +102,7 @@ class Question extends ActiveRecord
 	 * @return \yii\db\ActiveQuery
 	 */
 	public function getAnswers() {
-		return $this->hasMany(Answer::className(), ['test_id' => 'test_id']);
+		return $this->hasMany(Answer::className(), ['question_id' => 'question_id']);
 	}
 
 

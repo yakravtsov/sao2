@@ -11,8 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' =
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
-    <h1>№<?= $model->user_id . " ";
-        echo Html::encode($this->title) ?></h1>
+    <h1><?=Html::encode($this->title) ?></h1>
     <? // print_r($model->getAuthorName()) ?>
     <?= DetailView::widget([
         'model' => $model,
@@ -26,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             [
                 'attribute' => 'organization_id',
+                'label' => 'Компания',
                 'value' => $model->getCompanyName(),
                 'format' => 'text',
             ],
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Html::tag('i', '', ['class' => 'glyphicon glyphicon-trash']) . ' Удалить', ['delete', 'id' => $model->user_id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить пользователя?',
                 'method' => 'post',
             ],
         ]) ?>

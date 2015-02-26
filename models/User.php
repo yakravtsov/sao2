@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\AuthorBehavior;
 use Yii;
+use yii\base\Event;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
@@ -43,8 +44,20 @@ class User extends ActiveRecord implements IdentityInterface
 
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
+	protected $_password;
 
-    /**
+	public function beforeSave($insert) {
+		if (parent::beforeSave($insert)) {
+			         if($this->isNewRecord AND $this->scenario=='import'){
+						 $this->setPassword($this->generatePassword());
+					 }
+			         return true;
+			     } else {
+			         return false;
+			     }
+	}
+
+	/**
      * @inheritdoc
      */
     public static function tableName()
@@ -299,12 +312,13 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
+		$this->_password = $password;
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
     public function getPassword()
     {
-        return;
+        return $this->scenario=='signup' ? $this->_password : '';
     }
 
     /**
@@ -364,4 +378,8 @@ class User extends ActiveRecord implements IdentityInterface
 
         return array_key_exists($this->company_id, $keys) ? $keys[$this->company_id] : 'Неизвестная организация';
     }
+
+	private function generatePassword() {
+		return substr(md5($this->email.$this->phio.time()), 0, 5);
+	}
 }
