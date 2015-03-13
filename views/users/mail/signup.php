@@ -10,7 +10,7 @@
 	<tr>
 		<td>
 			Если у Вас возникнут вопросы, Вы можете задать их, заполнив форму по ссылке:<br />
-			<a href="//sao2.mota-systems.ru/feedback/add" target="_blank">Задать вопрос в техподдержку</a>
+			<a href="http://sao2.mota-systems.ru/feedback/add" target="_blank">Задать вопрос в техподдержку</a>
 		</td>
 	</tr>
 	<tr><td><br /><br /></td></tr>

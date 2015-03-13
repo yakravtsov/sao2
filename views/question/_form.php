@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="question-form">
+<div class="question-form" ng-show="modal.type='question'">
 	<?php $form = ActiveForm::begin(['action' => $model->isNewRecord ? '/question/create' : '/question/update']); ?>
 
 	<?= $form->field($model, 'name')->textarea(['maxlength' => 255, 'ng-model' => 'question.name']) ?>
@@ -16,21 +16,8 @@ use yii\widgets\ActiveForm;
 	<?= $form->field($model, 'type')->dropDownList($model->getTypes(), ['ng-model' => 'question.type']) ?>
 
 	<?
-	if($model->isNewRecord){
-		echo $form->field($model, 'test_id')->hiddenInput(['value'=>$test_id])->label(false);
-	} else {
-		echo $form->field($model, 'test_id')->hiddenInput()->label(false);
-	}
+		echo $form->field($model, 'test_id')->hiddenInput(['ng-bind'=>'test.test_id'])->label(false);
 	?>
-
-
-	<!--    --><? //= $form->field($model, 'root')->textInput() ?>
-	<!---->
-	<!--    --><? //= $form->field($model, 'lft')->textInput() ?>
-	<!---->
-	<!--    --><? //= $form->field($model, 'rgt')->textInput() ?>
-
-	<!--    --><? //= $form->field($model, 'depth')->textInput() ?>
 
 	<h3>Варианты ответов</h3>
 
@@ -62,7 +49,7 @@ use yii\widgets\ActiveForm;
 	</div>
 
 	<div class="form-group">
-		<?= Html::tag('a', Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']) . ' Добавить вариант ответа', ['class' => '', 'href' => '#', 'ng-click'=>'question.newAnswer()']) ?>
+		<?= Html::tag('a', Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']) . ' Добавить вариант ответа', ['class' => '', 'href' => '#', 'ng-click'=>'question.addAnswer()']) ?>
 	</div>
 
 	<hr>

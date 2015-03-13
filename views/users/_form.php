@@ -12,7 +12,8 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'company_id')->dropDownList($model->getCompanies()) ?>
+    <?= isset($modal) ? $form->field($model, 'company_id')->hiddenInput()->label(false) : $form->field($model, 'company_id')->dropDownList($model->getCompanies());
+	?>
 
     <?= $form->field($model, 'role_id')->dropDownList($model->getRoleValues()) ?>
 
@@ -22,11 +23,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => 32]) ?>
 
-    <?//= $form->field($model, 'organization_id')->dropDownList($model->getOrganizations()) ?>
+	<?= $form->field($model, 'subcompany')->textInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'status')->dropDownList($model->getStatusValues()) ?>
 
-    <div class="form-group">
+    <div class="form-group text-center">
         <?= Html::submitButton($model->isNewRecord ? Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Добавить пользователя' : Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Сохранить изменения', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
