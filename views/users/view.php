@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->getCompanyName(),
                 'format' => 'text',
             ],
+			'subcompany',
             [
                 'attribute' => 'author.phio',
                 'label' => 'Автор',

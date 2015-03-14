@@ -20,6 +20,8 @@ AppAsset::register($this);
     <script type="application/javascript" src="/js/angular/vendor/angular.min.js"></script>
     <script type="application/javascript" src="/js/angular/modules/sao-module.js"></script>
     <script type="application/javascript" src="/js/angular/controllers/tests-controller.js"></script>
+    <script type="application/javascript" src="/js/angular/services/decorate.js"></script>
+    <script type="application/javascript" src="/js/angular/services/modalHeader.js"></script>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 
@@ -46,7 +48,7 @@ AppAsset::register($this);
                     ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-list-alt']) . ' Компании', 'url' => ['/companies']],
                     ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-user']) . ' Пользователи', 'url' => ['/users']],
                     ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-question-sign']) . ' Техподдержка', 'url' => ['/feedback/add']],
-                    ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-question-sign']) . ' Проекты', 'url' => ['/feedback/add']],
+                    ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-question-sign']) . ' Проекты', 'url' => ['/projects']],
                     ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-list-alt']) . ' Тесты', 'url' => ['/test']],
                     //['label' => 'О проекте', 'url' => ['/site/about']],
                     Yii::$app->user->isGuest ?

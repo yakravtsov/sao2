@@ -4,16 +4,22 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Project;
+use app\models\Company;
 use app\models\search\ProjectsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * ProjectsController implements the CRUD actions for Project model.
  */
 class ProjectsController extends Controller
 {
+
+
     public function behaviors()
     {
         return [
@@ -60,13 +66,22 @@ class ProjectsController extends Controller
      */
     public function actionCreate()
     {
+
+
         $model = new Project();
+		$companies = ArrayHelper::map(Company::find()->All(), 'company_id', 'name');
+
+		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model,['date_start','date_end']);
+		}
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->project_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+				'companies' => $companies,
             ]);
         }
     }

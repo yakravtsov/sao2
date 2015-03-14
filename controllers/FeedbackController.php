@@ -15,7 +15,8 @@ use yii\filters\VerbFilter;
 /**
  * FeedbackController implements the CRUD actions for Feedback model.
  */
-class FeedbackController extends Controller {
+class FeedbackController extends Controller
+{
 
 	public function behaviors() {
 		return [
@@ -39,10 +40,10 @@ class FeedbackController extends Controller {
 		$statuses     = $model->getStatusValues();
 
 		return $this->render('index', [
-									  'searchModel'  => $searchModel,
-									  'dataProvider' => $dataProvider,
-									  'statuses'     => $statuses
-									  ]);
+			'searchModel'  => $searchModel,
+			'dataProvider' => $dataProvider,
+			'statuses'     => $statuses
+		]);
 	}
 
 	/**
@@ -58,11 +59,11 @@ class FeedbackController extends Controller {
 		$answered       = isset($_GET['answered']) ? TRUE : FALSE;
 
 		return $this->render('view', [
-									 'model'          => $this->findModel($id),
-									 'feedbackAnswer' => $feedbackAnswer,
-									 'answers'        => $answers,
-									 'answered'       => $answered
-									 ]);
+			'model'          => $this->findModel($id),
+			'feedbackAnswer' => $feedbackAnswer,
+			'answers'        => $answers,
+			'answered'       => $answered
+		]);
 	}
 
 	/**
@@ -82,14 +83,6 @@ class FeedbackController extends Controller {
 		}
 	}
 
-	protected function findAnswerModel($id) {
-		if (($model = FeedbackAnswer::findOne($id)) !== NULL) {
-			return $model;
-		} else {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
-	}
-
 	/**
 	 * Creates a new Feedback model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -101,8 +94,8 @@ class FeedbackController extends Controller {
 			return $this->redirect(['view', 'id' => $model->feedback_id]);
 		} else {
 			return $this->render('create', [
-										   'model' => $model,
-										   ]);
+				'model' => $model,
+			]);
 		}
 	}
 
@@ -120,8 +113,8 @@ class FeedbackController extends Controller {
 			return $this->redirect(['view', 'id' => $model->feedback_id]);
 		} else {
 			return $this->render('update', [
-										   'model' => $model,
-										   ]);
+				'model' => $model,
+			]);
 		}
 	}
 
@@ -143,19 +136,19 @@ class FeedbackController extends Controller {
 		$model = new Feedback();
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			Yii::$app->mailer->compose('/feedback/mail/notify', ['model' => $model])
-							 ->setFrom('no-reply@mota-systems.ru')
-							 ->setTo($model->email)
-							 ->setSubject('Ваш запрос в техподдержку S&A Online')
-							 ->send();
+			                 ->setFrom('no-reply@mota-systems.ru')
+			                 ->setTo($model->email)
+			                 ->setSubject('Ваш запрос в техподдержку S&A Online')
+			                 ->send();
 
 			return $this->redirect(['success']);
 		} else {
-			$user = User::find(['user_id' => Yii::$app->user->id])->asArray()->One();
+			$user = User::findOne(['user_id' => Yii::$app->user->id]);
 
 			return $this->render('add', [
-										'model' => $model,
-										'user'  => $user
-										]);
+				'model' => $model,
+				'user'  => $user
+			]);
 		}
 	}
 
@@ -170,10 +163,10 @@ class FeedbackController extends Controller {
 			$model->status = 1;
 			$model->save();
 			Yii::$app->mailer->compose('/feedback/mail/answer', ['model' => $model, 'answer' => $feedbackAnswer->text])
-							 ->setFrom('no-reply@mota-systems.ru')
-							 ->setTo($model->email)
-							 ->setSubject('Ответ на Ваш запрос в техподдержку S&A Online')
-							 ->send();
+			                 ->setFrom('no-reply@mota-systems.ru')
+			                 ->setTo($model->email)
+			                 ->setSubject('Ответ на Ваш запрос в техподдержку S&A Online')
+			                 ->send();
 
 			return $this->redirect(['view', 'id' => $feedbackAnswer->feedback_id, 'answered' => '']);
 		}
@@ -188,7 +181,6 @@ class FeedbackController extends Controller {
 			throw new NotFoundHttpException('Операция не была завершена, попробуйте позднее.');
 		}
 	}
-
 
 	/** Тут join нужны, похоже. А лучше -- joint.
 	 *
@@ -207,17 +199,25 @@ class FeedbackController extends Controller {
 		array_multisort($all, SORT_ASC, $merge);
 
 		return $this->render('viewByEmail', [
-											'all' => $all,
-											//'questions' => $questions,
-											//'answers' => $answers
-											]);
+			'all' => $all,
+			//'questions' => $questions,
+			//'answers' => $answers
+		]);
 	}
 
 	public function actionEmail($id) {
 		return $this->render('/feedback/mail/answer', [
-													  //'model' => $model,
-													  'model' => $this->findModel($id),
-													  //'answers' => $answers,
-													  ]);
+			//'model' => $model,
+			'model'  => $this->findModel($id),
+			'answer' => '',
+		]);
+	}
+
+	protected function findAnswerModel($id) {
+		if (($model = FeedbackAnswer::findOne($id)) !== NULL) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 	}
 }

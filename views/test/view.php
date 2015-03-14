@@ -20,7 +20,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="test-view" ng-app="sao" ng-controller="TestController"
      ng-init='initModel(<?= \yii\helpers\BaseJson::encode($model) ?>)'>
 	<!--    <h1 style="color: red" ng-bind="test|json"></h1>-->
+	<? Modal::begin([
+	'header' => '<h2 ng-bind="modal.header"></h2>',
+	//'options' => ['class' => 'modal-lg'],
+	'size' => 'modal-lg',
+	'options' => ['data-backdrop'=>'static'],
+	'toggleButton' => false
+	]);
 
+	echo $this->render('@app/views/question/_form', ['model' => $questionModel]);
+	echo $this->render('@app/views/scale/_form', ['model' => $scalesModel]);
+
+	Modal::end();
+	?>
 	<h1><?= Html::encode($this->title) ?></h1>
 
 	<p>
@@ -99,25 +111,5 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 		],
 	]);
-
-
-/*
-		Modal::begin([
-			'header' => '<h2 ng-bind="modalHeader"></h2>',
-			//'options' => ['class' => 'modal-lg'],
-			'size' => 'modal-lg',
-			'options' => ['data-backdrop'=>'static'],
-			'toggleButton' => [
-				'tag' => 'a',
-				'class' => 'btn btn-lg btn-block btn-info',
-				'label' => 'Добавить вопрос',
-				'ng-click' => 'newQuestion()'
-			]
-		]);
-		echo $this->render('@app/views/question/_form', ['model' => $questionModel]);
-
-		Modal::end();
-*/
-
 	?>
 </div>
