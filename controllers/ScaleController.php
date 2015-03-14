@@ -8,12 +8,13 @@ use app\models\search\ScaleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ScaleController implements the CRUD actions for Scale model.
  */
-class ScaleController extends Controller
-{
+class ScaleController extends Controller {
+
 	public function behaviors() {
 		return [
 			'verbs' => [
@@ -34,9 +35,9 @@ class ScaleController extends Controller
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 		return $this->render('index', [
-			'searchModel'  => $searchModel,
-			'dataProvider' => $dataProvider,
-		]);
+									  'searchModel'  => $searchModel,
+									  'dataProvider' => $dataProvider,
+									  ]);
 	}
 
 	/**
@@ -48,8 +49,8 @@ class ScaleController extends Controller
 	 */
 	public function actionView($id) {
 		return $this->render('view', [
-			'model' => $this->findModel($id),
-		]);
+									 'model' => $this->findModel($id),
+									 ]);
 	}
 
 	/**
@@ -76,35 +77,42 @@ class ScaleController extends Controller
 	 */
 	public function actionCreate() {
 		$model = new Scale();
+		if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+			if (Yii::$app->request->isAjax) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				$model->refresh();
 
-
-		if ($model->load(Yii::$app->request->post())) {
-			die(print_r($model));
-
-			return $this->redirect(['view', 'id' => $model->scale_id]);
+				return $model;
+			} else {
+				return $this->redirect(['view', 'id' => $model->scale_id]);
+			}
 		} else {
+			if (Yii::$app->request->isAjax) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+
+				return $model->errors;
+			}
 			return $this->render('create', [
-				'model' => $model,
-			]);
+										   'model' => $model,
+										   ]);
 		}
 	}
 
 	public function actionCreatejson() {
-		$data       = Json::decode(file_get_contents('php://input'));
+		$data = Json::decode(file_get_contents('php://input'));
 		//die(print_r($data));
-		$model      = new Scale();
+		$model            = new Scale();
 		$model->author_id = 1;
 		if ($model->load($data) && $model->save()) {
 			//Yii::$app->response->format = Response::FORMAT_JSON;
 			echo 'сохранилось';
-//			$model->refresh();
+			//			$model->refresh();
 		} else {
 			return $this->render('create', [
-				'model' => $model,
-			]);
+										   'model' => $model,
+										   ]);
 		}
 		//die(var_dump($model->save()));
-
 		//return var_dump($model->getErrors());
 	}
 
@@ -118,13 +126,12 @@ class ScaleController extends Controller
 	 */
 	public function actionUpdate($id) {
 		$model = $this->findModel($id);
-
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			return $this->redirect(['view', 'id' => $model->scale_id]);
 		} else {
 			return $this->render('update', [
-				'model' => $model,
-			]);
+										   'model' => $model,
+										   ]);
 		}
 	}
 

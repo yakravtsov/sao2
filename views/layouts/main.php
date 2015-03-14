@@ -21,7 +21,7 @@ AppAsset::register($this);
     <script type="application/javascript" src="/js/angular/modules/sao-module.js"></script>
     <script type="application/javascript" src="/js/angular/controllers/tests-controller.js"></script>
     <script type="application/javascript" src="/js/angular/services/decorate.js"></script>
-    <script type="application/javascript" src="/js/angular/services/modalHeader.js"></script>
+    <script type="application/javascript" src="/js/angular/services/modal.js"></script>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 
@@ -29,6 +29,9 @@ AppAsset::register($this);
 <!--    <script src="/js/select2/js/select2.min.js"></script>-->
 </head>
 <body>
+<script>
+	angular.module('sao').constant('csrf', {<?=Yii::$app->request->csrfParam?>: '<?=Yii::$app->request->getCsrfToken()?>'});
+</script>
 
 <?php $this->beginBody() ?>
     <div class="wrap">

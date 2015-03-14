@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="question-form" ng-show="modal.type='question'">
+<div class="question-form" ng-show="modal.isCurrentObject(test.templates.question)">
 	<?php $form = ActiveForm::begin(['action' => $model->isNewRecord ? '/question/create' : '/question/update']); ?>
 
 	<?= $form->field($model, 'name')->textarea(['maxlength' => 255, 'ng-model' => 'question.name']) ?>

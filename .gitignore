@@ -5,3 +5,7 @@ motasystems/.*
 *.lock
 controllers/UniController.php
 views/uni
+vendor
+view/uniall
+composer.phar
+runtime

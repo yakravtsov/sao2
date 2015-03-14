@@ -12,7 +12,7 @@ use kartik\sortable\Sortable;
 
 
 echo Html::tag('div', '&nbsp;');?>
-<a class="btn btn-success" data-toggle="modal" data-target="#w0" ng-click="modal.show(test.templates.question)"><i class="glyphicon glyphicon-plus"></i> Добавить вопрос</a>
+<a class="btn btn-success" data-toggle="modal" data-target="#w0" ng-click="modal.show(test.templates.question, 'Новый вопрос')"><i class="glyphicon glyphicon-plus"></i> Добавить вопрос</a>
 <?=Html::tag('div', '&nbsp;');
 
 $sortable = [];
