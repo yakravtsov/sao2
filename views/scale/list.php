@@ -5,7 +5,7 @@ use yii\bootstrap\Modal;
 
 ?>
 <?=Html::tag('div', '&nbsp;');?>
-<a class="btn btn-success" data-toggle="modal" data-target="#w0" ng-click="modal.show(test.templates.scale)"><i class="glyphicon glyphicon-plus"></i> Добавить шкалу</a>
+<a class="btn btn-success" data-toggle="modal" data-target="#w0" ng-click="modal.show(test.templates.scale, 'Новая шкала')"><i class="glyphicon glyphicon-plus"></i> Добавить шкалу</a>
 <?=Html::tag('div', '&nbsp;');?>
 
 <table class="table">

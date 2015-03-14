@@ -1,7 +1,8 @@
 angular.module('sao').controller('TestController',
-	['$scope', '$http', 'decorate', 'modalHeader',
-	 function ($scope, $http, decorate, modalHeader) {
+	['$scope', '$http', 'decorate', 'modal',
+	 function ($scope, $http, decorate, modal) {
 		 $scope.test = {};
+		 $scope.modal = modal;
 
 		 $scope.initModel = function (test) {
 			 test = decorate.test(test);
@@ -19,19 +20,9 @@ angular.module('sao').controller('TestController',
 			 angular.forEach(test.scales, function (scale, key) {
 				 test.scales[key] = decorate.common(scale);
 			 });
-
+			 test.templates.question = decorate.question(test.templates.question);
+			 test.templates.scale = decorate.scale(test.templates.scale);
 			 $scope.test = test;
 		 };
-
-		 /*$scope.$watch('test', function (newVal, oldVal, scope) {
-		  $http({
-		  method: 'POST',
-		  url: '/test/update?id=' + scope.test.test_id,
-		  data: JSON.stringify({Test: scope.test}),
-		  headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-		  });
-
-		  }, true)*/
-
 
 	 }]);

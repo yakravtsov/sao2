@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
      ng-init='initModel(<?= \yii\helpers\BaseJson::encode($model) ?>)'>
 	<!--    <h1 style="color: red" ng-bind="test|json"></h1>-->
 	<? Modal::begin([
-	'header' => '<h2 ng-bind="modal.header"></h2>',
+	'header' => '<h2 ng-bind="modal.getHeader()"></h2>',
 	//'options' => ['class' => 'modal-lg'],
 	'size' => 'modal-lg',
 	'options' => ['data-backdrop'=>'static'],
