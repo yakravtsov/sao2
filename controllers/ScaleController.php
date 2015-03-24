@@ -98,24 +98,6 @@ class ScaleController extends Controller {
 		}
 	}
 
-	public function actionCreatejson() {
-		$data = Json::decode(file_get_contents('php://input'));
-		//die(print_r($data));
-		$model            = new Scale();
-		$model->author_id = 1;
-		if ($model->load($data) && $model->save()) {
-			//Yii::$app->response->format = Response::FORMAT_JSON;
-			echo 'сохранилось';
-			//			$model->refresh();
-		} else {
-			return $this->render('create', [
-										   'model' => $model,
-										   ]);
-		}
-		//die(var_dump($model->save()));
-		//return var_dump($model->getErrors());
-	}
-
 	/**
 	 * Updates an existing Scale model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -125,9 +107,11 @@ class ScaleController extends Controller {
 	 * @return mixed
 	 */
 	public function actionUpdate($id) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
 		$model = $this->findModel($id);
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->scale_id]);
+		if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+			$model->refresh();
+			return $model;
 		} else {
 			return $this->render('update', [
 										   'model' => $model,
@@ -144,8 +128,7 @@ class ScaleController extends Controller {
 	 * @return mixed
 	 */
 	public function actionDelete($id) {
-		$this->findModel($id)->delete();
-
-		return $this->redirect(['index']);
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		return $this->findModel($id)->delete();
 	}
 }

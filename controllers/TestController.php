@@ -63,13 +63,11 @@ class TestController extends Controller
         $questions = Question::find()->where(['test_id'=>$id])->asArray()->All();
 
         $scale = new Scale();
-        $scales = $scale->find()->where(['test_id'=>$id])->asArray()->All();
 
         return $this->render('view', [
             'model' => $test,
             'questionModel'=> $question,
             'questions' => $questions,
-            'scales' => $scales,
             'scalesModel' => $scale,
         ]);
     }

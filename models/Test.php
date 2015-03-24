@@ -99,7 +99,7 @@ class Test extends \yii\db\ActiveRecord
      */
     public function getQuestions()
     {
-        return $this->hasMany(Question::className(), ['test_id' => 'test_id']);
+        return $this->hasMany(Question::className(), ['test_id' => 'test_id'])->indexBy('question_id');
     }
 
     /**
@@ -107,7 +107,7 @@ class Test extends \yii\db\ActiveRecord
      */
     public function getScales()
     {
-        return $this->hasMany(Scale::className(), ['test_id' => 'test_id']);
+        return $this->hasMany(Scale::className(), ['test_id' => 'test_id'])->indexBy('scale_id');
     }
 
 	/**

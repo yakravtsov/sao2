@@ -91,20 +91,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			],
 			[
-				'active' => true,
 				'label'   => 'Вопросы',
 
-				'content' => $this->render('@app/views/question/list', ['questions' => $questions,'questionModel' => $questionModel,'test_id'=>$model['test_id'], 'scales'=>$scales])
+				'content' => $this->render('@app/views/question/list', ['questions' => $questions,'questionModel' => $questionModel,'test_id'=>$model['test_id']])
 				,
-				//'active' => true,
+				'active' => true,
 				//'headerOptions' => '',
 				//'options' => ['id' => 'myveryownID'
 				//],
 			],
 			[
-				'active' => false,
 				'label' => 'Шкалы',
-				'content' => $this->render('@app/views/scale/list', ['test_id'=>$model['test_id'],'scales'=>$scales,'scalesModel'=>$scalesModel])
+				'content' => $this->render('@app/views/scale/list', ['test_id'=>$model['test_id'], 'scalesModel'=>$scalesModel])
 				//'headerOptions' => '',
 				//'options' => ['id' => 'myveryownID'
 				//],

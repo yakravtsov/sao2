@@ -104,6 +104,7 @@ class QuestionController extends Controller
 	public function actionCreate() {
 		$model = new Question();
 		$model->lft = $model->rgt = $model->depth = $model->author_id = 1;
+		die(var_dump(Yii::$app->request->post()));
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 			return $this->redirect(['view', 'id' => $model->question_id]);
 		} else {

@@ -17,14 +17,14 @@ use yii\bootstrap\Modal;
 	</tr>
 	</thead>
 	<tbody>
-	<tr ng-repeat="scale in test.scales">
+	<tr ng-repeat="(pk, scale) in test.scales">
 		<td ng-bind="scale.name"></td>
 		<td ng-bind="scale.default"></td>
 		<td class="text-right">
-			<a href="#" ng-click="modal.show(scale)" class="btn btn-primary"><i
+			<a href="#" ng-click="modal.show(scale, scale.name, true)" class="btn btn-primary" data-toggle="modal" data-target="#w0"><i
 					class="glyphicon glyphicon-pencil"></i></a>
-			<a href="#" ng-click="scale.delete()" class="btn btn-danger"><i
-					class="glyphicon glyphicon-remove"></i></a>
+			<button ng-click="test.deleteScale(scale)" class="btn btn-danger"><i
+					class="glyphicon glyphicon-remove"></i></button>
 		</td>
 	</tr>
 	</tbody>

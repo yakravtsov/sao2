@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
     <hr>
     <div class="text-center">
         <div class="form-group">
-            <?= Html::submitButton(Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Сохранить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'ng-click' => 'modal.getCurrentObject().save().then(test.addScale)', 'data-dismiss'=>'modal']) ?>
+            <?= Html::submitButton(Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Сохранить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'ng-click' => 'test.saveScale(modal.getCurrentObject())', 'data-dismiss'=>'modal']) ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

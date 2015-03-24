@@ -102,7 +102,7 @@ class Question extends ActiveRecord
 	 * @return \yii\db\ActiveQuery
 	 */
 	public function getAnswers() {
-		return $this->hasMany(Answer::className(), ['question_id' => 'question_id']);
+		return $this->hasMany(Answer::className(), ['question_id' => 'question_id'])->indexBy('answer_id');
 	}
 
 
