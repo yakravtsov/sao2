@@ -7,17 +7,18 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\ProjectsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Projects';
+$this->title = 'Проекты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="project-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <h1><?= Html::tag('i', '', ['class' => 'glyphicon glyphicon-list-alt']) . " " . Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Project', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']) . ' Добавить проект', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <?// die(var_dump($companies)); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,12 +26,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'project_id',
-            'created',
-            'updated',
-            'author_id',
+            //'project_id',
+            //'created',
+            //'updated',
+            //'author_id',
+            'name',
+            [
+                'attribute' => 'companies',
+                'value' => function ($data) {
+                    //return print_r($data->getCompany($data->companies));
+                },
+                'format' => 'raw'
+            ],
             'date_start',
-            // 'date_end',
+             'date_end',
             // 'report_type',
             // 'description:ntext',
             // 'notify',

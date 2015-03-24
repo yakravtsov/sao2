@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'date_end',
             'report_type',
             'description:ntext',
-            'notify',
+            'settings',
         ],
     ]) ?>
 
