@@ -9,7 +9,6 @@ use app\models\Test;
 use app\models\Competence;
 use app\models\search\ProjectsSearch;
 use yii\base\Exception;
-use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -73,13 +72,14 @@ class ProjectsController extends Controller {
 	 */
 	public function actionCreate() {
 		$model        = new Project();
-
+		$companies    = ArrayHelper::map(Company::find()->All(), 'company_id', 'name');
+		$tests        = ArrayHelper::map(Test::find()->All(), 'test_id', 'name');
+		$competencies = ArrayHelper::map(Competence::find()->All(), 'competence_id', 'name');
 
 
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 			$r= $model->save();
 			$model->refresh();
-
 			//$abrvalg = $model->save();
 			//die(var_dump($model->getErrors()));
 			//die(var_dump($model->getAttributes()));
@@ -91,12 +91,9 @@ class ProjectsController extends Controller {
 			}
 			$transaction->commit();*/
 
-//			return $this->render('asd');
+
 			return $this->redirect(['view', 'id' => $model->project_id]);
 		} else {
-			$companies    = ArrayHelper::map(Company::find()->All(), 'company_id', 'name');
-			$tests        = ArrayHelper::map(Test::find()->All(), 'test_id', 'name');
-			$competencies = ArrayHelper::map(Competence::find()->All(), 'competence_id', 'name');
 			return $this->render('create', [
 										   'model'        => $model,
 										   'companies'    => $companies,
