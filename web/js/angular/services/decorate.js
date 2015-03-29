@@ -92,6 +92,9 @@ angular.module('sao').factory('decorate', ['$http', 'modal', '$rootScope', '$q',
 				_test.questions[_newQuestion.getPk()] = _newQuestion;
 			});
 		},
+		isValid: function() {
+
+		},
 		saveScale: function (scale) {
 			var _test = this;
 			scale.save().then(function (result) {

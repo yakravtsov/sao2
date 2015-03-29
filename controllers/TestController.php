@@ -11,6 +11,7 @@ use app\models\Test;
 use app\models\search\TestSearch;
 use yii\db\ActiveQuery;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -59,6 +60,8 @@ class TestController extends Controller
     public function actionView($id)
     {
         $test = $this->findModel($id);
+//		VarDumper::dump($test, 10, true);
+//		die(var_dump($test));
 		$question = new Question();
         $questions = Question::find()->where(['test_id'=>$id])->asArray()->All();
 
@@ -83,10 +86,7 @@ class TestController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 			$model->save();
-			die(var_dump($_POST));
-			foreach(Yii::$app->request->post("effect") as $effect) {
-				die($effect);
-			}
+
             return $this->redirect(['view', 'id' => $model->test_id]);
         } else {
             return $this->render('create', [
@@ -147,7 +147,7 @@ class TestController extends Controller
      */
     protected function findModel($id)
     {
-		$model = Test::find($id)->joinWith(['questions.answers.effects', 'scales', 'author'])->asArray()->one();
+		$model = Test::find()->joinWith(['questions.answers.effects', 'scales', 'author'])->where(['test.test_id'=>$id])->asArray()->one();
 		if ($model !== null) {
             return $model;
         } else {

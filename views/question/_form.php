@@ -59,8 +59,13 @@ use yii\widgets\ActiveForm;
 	<hr>
 	<div class="text-center">
 		<div class="form-group">
-			<?= Html::button($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'ng-click'=>'test.saveQuestion(modal.getCurrentObject())']) ?>
-<!--			--><?//= Html::submitButton($model->isNewRecord ? Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Сохранить вопрос' : 'Сохранить изменения', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'ng-click' => 'saveQuestion()']) ?>
+			<?=
+			Html::button($model->isNewRecord ? 'Create' : 'Update',
+						 [
+						 'class'       => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+						 'ng-click'    => 'test.saveQuestion(modal.getCurrentObject())',
+						 'ng-disabled' => 'test.isValid()'
+						 ]) ?>
 		</div>
 	</div>
 

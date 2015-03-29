@@ -6,7 +6,7 @@ return [
     'username' => 'saonline',
     'password' => '0000',
     'charset' => 'utf8',
-	'enableSchemaCache'=>true,
+	'enableSchemaCache'=>false,
     'schemaMap' => [
         'pgsql'=> [
             'class'=>'yii\db\pgsql\Schema',

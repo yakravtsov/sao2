@@ -57,9 +57,9 @@ class Company extends ActiveRecord
     public function rules()
     {
         return [
-            [['created', 'updated'], 'safe'],
-            [['author_id', 'company_id', 'name'], 'required'],
-            [['author_id', 'company_id', 'parent_id', 'level'], 'integer'],
+            //[['created', 'updated'], 'safe'],
+            [['parent_id', 'name'], 'required'],
+            [['parent_id', 'level'], 'integer'],
             [['name'], 'string', 'max' => 250]
         ];
     }
