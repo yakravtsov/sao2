@@ -12,10 +12,9 @@ use kartik\select2\Select2;
 ?>
 
 <div class="project-form">
-
 	<?php $form = ActiveForm::begin([
 		'enableClientValidation' => TRUE,
-	    'validateOnBlur' => true,
+		'validateOnBlur'         => TRUE,
 	]); ?>
 
 	<?= $form->field($model, 'name')->textInput() ?>
@@ -72,6 +71,8 @@ use kartik\select2\Select2;
 	<?= $form->field($model, 'report_type')->textInput() ?>
 
 	<?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+	<?= $form->field($model, 'reportTypes')->checkboxList($model->getReportValues()) ?>
 
 	<? //= $form->field($model, 'settings')->textInput() ?>
 

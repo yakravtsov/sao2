@@ -23,11 +23,15 @@ use yii\helpers\ArrayHelper;
  * @property string  $description
  * @property integer $settings
  */
-class Project extends ActiveRecord
-{
+class Project extends ActiveRecord {
 
 	const TYPE_COMPETENCE = 1;
 	const TYPE_TEST       = 2;
+
+	const REPORT_SUMMARY    = 4;
+	const REPORT_INDIVIDUAL = 8;
+	const REPORT_COMPETENCE = 16;
+	const REPORT_TEST       = 32;
 
 	public function getType() {
 		return $this->isCompetenceType() ? self::TYPE_COMPETENCE : self::TYPE_TEST;
@@ -38,6 +42,8 @@ class Project extends ActiveRecord
 	}
 
 	public function setType($type) {
+		$this->_checkSetting(self::TYPE_COMPETENCE, TRUE, TRUE);
+		$this->_checkSetting(self::TYPE_TEST, TRUE, TRUE);
 		$this->_checkSetting($type, TRUE);
 
 		return $this;
@@ -62,6 +68,43 @@ class Project extends ActiveRecord
 	}
 
 
+	public function getReportTypes() {
+		$reportValues = $this->getReportValues();
+		foreach ($reportValues as $key => $type) {
+			if (!$this->_checkSetting($key)) {
+				unset($reportValues[$key]);
+			}
+		}
+
+		return array_keys($reportValues);
+	}
+
+	public function setReportTypes($types) {
+		foreach ($this->getReportValues() as $type => $value) {
+			$this->_checkSetting($type, TRUE, TRUE);
+		}
+		foreach ($types as $type) {
+			$this->_checkSetting($type, TRUE);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getReportValues() {
+		$keys = [
+			self::REPORT_SUMMARY    => 'Cводный',
+			self::REPORT_INDIVIDUAL => 'Индивидуальный',
+			self::REPORT_COMPETENCE => 'По компетенциям',
+			self::REPORT_TEST       => 'По группе тестов',
+		];
+
+		return $keys;
+	}
+
+
 	/**
 	 * @inheritdoc
 	 */
@@ -74,7 +117,7 @@ class Project extends ActiveRecord
 	 */
 	public function rules() {
 		return [
-			[['date_start', 'date_end', 'type'], 'safe'],
+			[['date_start', 'date_end', 'type', 'reportTypes'], 'safe'],
 			[['date_start', 'date_end', 'name'], 'required'],
 			[['report_type', 'settings'], 'integer'],
 			//['companies', 'required'],
@@ -131,10 +174,17 @@ class Project extends ActiveRecord
 		];
 	}
 
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getAuthor() {
+		return $this->hasOne(User::className(), ['user_id' => 'author_id']);
+	}
+
 
 	public function getCompanies() {
 		return $this->hasOne(Company::className(), ['company_id' => 'company_id'])
-		            ->viaTable('project_company', ['project_id' => 'project_id']);
+					->viaTable('project_company', ['project_id' => 'project_id']);
 	}
 
 	public function setCompanies() {
@@ -143,12 +193,16 @@ class Project extends ActiveRecord
 
 	public function getCompany($company_id) {
 		//return Company::find(['company_id'=>$this->company_id]);
-		return Company::findOne(['company_id'=>$company_id])->AsArray();
+		return Company::findOne(['company_id' => $company_id])->AsArray();
 	}
 
 	public function getTests() {
 		return $this->hasMany(Test::className(), ['test_id' => 'test_id'])
-		            ->viaTable('project_test', ['project_id' => 'project_id']);
+					->viaTable('project_test', ['project_id' => 'project_id']);
+	}
+
+	public function getTestsinfo() {
+		return TRUE;
 	}
 
 	public function setTests() {
@@ -163,10 +217,9 @@ class Project extends ActiveRecord
 	{
 		ProjectTest::model()->updateFrequency($this->_oldTags, $this->tags);
 	}*/
-
 	public function getCompetencies() {
 		return $this->hasMany(Competence::className(), ['competence_id' => 'competence_id'])
-		            ->viaTable('project_competence', ['project_id' => 'project_id']);
+					->viaTable('project_competence', ['project_id' => 'project_id']);
 	}
 
 
@@ -176,9 +229,19 @@ class Project extends ActiveRecord
 		return $this;
 	}
 
-	private function _checkSetting($setting, $update = FALSE) {
+	private function _checkSetting($setting, $update = FALSE, $remove = FALSE) {
 		if ($update) {
-			return $this->settings &= $setting;
+			if ($remove) {
+				if ($this->_checkSetting($setting)) {
+					$this->settings -= $setting;
+				}
+			} else {
+				if (!$this->_checkSetting($setting)) {
+					$this->settings += $setting;
+				}
+			}
+
+			return $this->settings;
 		}
 
 		return $this->settings & $setting;
@@ -187,17 +250,18 @@ class Project extends ActiveRecord
 	/**
 	 * @inheritdoc
 	 */
-	public function beforeSave($insert) {
+	public
+	function beforeSave($insert) {
 		$this->date_start = Yii::$app->formatter->asDatetime($this->date_start, 'Y-M-d 00:00:00');
 		$this->date_end   = Yii::$app->formatter->asDatetime($this->date_end, 'Y-M-d 00:00:00');
 
 		return parent::beforeSave($insert);
 	}
 
-	public function afterFind() {
+	public
+	function afterFind() {
 		parent::afterFind();
 		$this->date_start = Yii::$app->formatter->asDatetime($this->date_start, 'd.MM.Y');
 		$this->date_end   = Yii::$app->formatter->asDatetime($this->date_end, 'd.MM.Y');
-
 	}
 }
