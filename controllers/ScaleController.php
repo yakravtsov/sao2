@@ -27,33 +27,6 @@ class ScaleController extends Controller {
 	}
 
 	/**
-	 * Lists all Scale models.
-	 * @return mixed
-	 */
-	public function actionIndex() {
-		$searchModel  = new ScaleSearch();
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-		return $this->render('index', [
-									  'searchModel'  => $searchModel,
-									  'dataProvider' => $dataProvider,
-									  ]);
-	}
-
-	/**
-	 * Displays a single Scale model.
-	 *
-	 * @param integer $id
-	 *
-	 * @return mixed
-	 */
-	public function actionView($id) {
-		return $this->render('view', [
-									 'model' => $this->findModel($id),
-									 ]);
-	}
-
-	/**
 	 * Finds the Scale model based on its primary key value.
 	 * If the model is not found, a 404 HTTP exception will be thrown.
 	 *
@@ -107,7 +80,7 @@ class ScaleController extends Controller {
 	 * @return mixed
 	 */
 	public function actionUpdate($id) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
+		Yii::$app->response->format = Response::FORMAT_JSON;
 		$model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
 			$model->refresh();
@@ -128,7 +101,12 @@ class ScaleController extends Controller {
 	 * @return mixed
 	 */
 	public function actionDelete($id) {
-		Yii::$app->response->format = Response::FORMAT_JSON;
-		return $this->findModel($id)->delete();
+		$r = $this->findModel($id)->delete();
+		if(Yii::$app->request->isAjax) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $r;
+		} else {
+			return $this->redirect(['index']);
+		}
 	}
 }

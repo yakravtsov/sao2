@@ -38,15 +38,21 @@ class UserSearch extends User
 	 *
 	 * @return ActiveDataProvider
 	 */
-	public function search($params) {
-		$query = User::find();
+	public function search($params,$customQuery = false) {
+		if(!$customQuery){
+			$query = User::find();
+		} else {
+			$query = $customQuery;
+		}
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
+		    'pagination' => [
+			    //'pageSize' => 1
+		    ]
 		]);
 
 		$this->load($params);
-
 		if (!$this->validate()) {
 			// uncomment the following line if you do not want to any records when validation fails
 			// $query->where('0=1');

@@ -372,4 +372,8 @@ class User extends ActiveRecord implements IdentityInterface
 	public function generatePassword() {
 		return substr(hash('haval160,4', $this->email . $this->phio . time()), -8);
 	}
+
+	public function isClient() {
+		return $this->role_id == self::ROLE_CLIENT;
+	}
 }

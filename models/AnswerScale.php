@@ -17,6 +17,10 @@ use Yii;
  */
 class AnswerScale extends \yii\db\ActiveRecord
 {
+	const ADD = 1; // Сумма
+	const DEDUCT = 2; // Разность
+	const MULTIPLY = 3; // Умножение
+	const DIVIDE = 4; // Деление
     /**
      * @inheritdoc
      */
@@ -25,7 +29,16 @@ class AnswerScale extends \yii\db\ActiveRecord
         return 'answer_scale';
     }
 
-    /**
+	public static function getOperations() {
+		return [
+			self::ADD => 'прибавить',
+			self::DEDUCT => 'вычесть',
+			self::MULTIPLY => 'умножить',
+			self::DIVIDE => 'разделить',
+		];
+	}
+
+	/**
      * @inheritdoc
      */
     public function rules()

@@ -31,30 +31,30 @@ $this->params['breadcrumbs'][] = $this->title;
 								 },
 							 'format'    => 'raw',
 						 ],
-//						 [
-//							 'attribute' => 'created',
-//							 'value'     => function ($data) {
-//									 return Yii::$app->formatter->asDatetime($data->created, "php:d M Y, H:i:s");
-//								 }
-//						 ],
+						 [
+							 'attribute' => 'created',
+							 'value'     => function ($data) {
+									 return Yii::$app->formatter->asDatetime($data->created, "php:d M Y, H:i");
+								 }
+						 ],
 //						 [
 //							 'attribute' => 'updated',
 //							 'value'     => function ($data) {
 //									 return Yii::$app->formatter->asDatetime($data->updated, "php:d M Y, H:i:s");
 //								 }
 //						 ],
-//						 [
-//							 'attribute' => 'author_id',
-//							 'value'=>function($data) {
-//									 return $data->getAuthor()['phio'];
-//								 },
-//							 'filter' => $authors
-//						 ],
+						 [
+							 'attribute' => 'author_id',
+							 'value'=>function($data) {
+									 return $data->getAuthor()['phio'];
+								 },
+							 'filter' => $authors
+						 ],
             //'id',
             // 'parent_id',
             // 'level',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

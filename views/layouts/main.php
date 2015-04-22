@@ -50,9 +50,9 @@ AppAsset::register($this);
                     //['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-home']) . ' Главная', 'url' => ['/site/index']],
                     ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-list-alt']) . ' Компании', 'url' => ['/companies']],
                     ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-user']) . ' Пользователи', 'url' => ['/users']],
+                    ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-list-alt']) . ' Проекты', 'url' => ['/projects']],
+                    ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-list']) . ' Тесты', 'url' => ['/test']],
                     ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-question-sign']) . ' Техподдержка', 'url' => ['/feedback/add']],
-                    ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-question-sign']) . ' Проекты', 'url' => ['/projects']],
-                    ['label' => Html::tag('i', '', ['class' => 'glyphicon glyphicon-list-alt']) . ' Тесты', 'url' => ['/test']],
                     //['label' => 'О проекте', 'url' => ['/site/about']],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Войти', 'url' => ['/site/login']] :
@@ -74,8 +74,9 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-            <p class="pull-right"><?= Yii::powered() ?></p>
+            <p class="pull-left">&copy; BITOBE, <?= date('Y') ?>.</p>
+<!--            <p class="pull-right">--><?//= Yii::powered() ?><!--</p>-->
+<!--            <p class="pull-right"><small><strong>Система тестирования разработана в компании «<a href="//onlineconsulting.pro" target="_blank" title="Перейти на сайт компании">Онлайн Консалтинг</a>».</strong></small></p>-->
         </div>
     </footer>
 

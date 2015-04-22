@@ -28,23 +28,52 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'project_id',
             //'created',
-            //'updated',
             //'author_id',
-            'name',
+            [
+                'attribute' => 'name',
+                'value'     => function ($data) {
+                    return Html::a($data->name, ['view?id=' . $data->project_id]);
+                },
+                'format'    => 'raw',
+            ],
             [
                 'attribute' => 'companies',
+                'value' => 'companies.name'
+            ],
+            /*[
+                'attribute' => 'company',
                 'value' => function ($data) {
-                    //return print_r($data->getCompany($data->companies));
+                    return $data->company;
+                },
+                'format' => 'raw',
+                //'filter' => $companies
+            ],*/
+            [
+                'attribute' => 'date_start',
+                'value'     => function ($data){
+                    return Yii::$app->formatter->asDatetime($data['date_start'], "php:d M Y");
                 },
                 'format' => 'raw'
             ],
-            'date_start',
-             'date_end',
+            [
+                'attribute' => 'date_end',
+                'value'     => function ($data){
+                    return Yii::$app->formatter->asDatetime($data['date_end'], "php:d M Y");
+                },
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'updated',
+                'value'     => function ($data){
+                    return Yii::$app->formatter->asDatetime($data['updated'], "php:d M Y");
+                },
+                'format' => 'raw'
+            ],
             // 'report_type',
             // 'description:ntext',
             // 'notify',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

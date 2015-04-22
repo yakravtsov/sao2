@@ -5,8 +5,6 @@ namespace app\controllers;
 use app\models\Scale;
 use Yii;
 use app\models\Question;
-use app\models\search\QuestionSearch;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -17,8 +15,6 @@ use yii\web\Response;
  */
 class QuestionController extends Controller
 {
-	public $enableCsrfValidation = false;
-
 	public function behaviors() {
 		return [
 			'verbs' => [
@@ -31,82 +27,46 @@ class QuestionController extends Controller
 	}
 
 	/**
-	 * Lists all Question models.
-	 * @return mixed
-	 */
-	public function actionIndex() {
-		$searchModel  = new QuestionSearch();
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-		return $this->render('index', [
-			'searchModel'  => $searchModel,
-			'dataProvider' => $dataProvider,
-		]);
-	}
-
-	/**
-	 * Displays a single Question model.
-	 *
-	 * @param integer $id
-	 *
-	 * @return mixed
-	 */
-	public function actionView($id) {
-		return $this->render('view', [
-			'model' => $this->findModel($id),
-		]);
-	}
-
-	/**
 	 * Finds the Question model based on its primary key value.
 	 * If the model is not found, a 404 HTTP exception will be thrown.
 	 *
 	 * @param integer $id
 	 *
+	 * @param bool    $asArray
+	 *
+	 * @throws \yii\web\NotFoundHttpException
 	 * @return Question the loaded model
-	 * @throws NotFoundHttpException if the model cannot be found
 	 */
-	protected function findModel($id) {
-		if (($model = Question::findOne($id)) !== NULL) {
+	protected function findModel($id, $asArray = false) {
+		$model = Question::find()->joinWith('answers.effects')->where(['question.question_id'=>$id]);
+		if($asArray) {
+			$model->asArray();
+		}
+		$model = $model->one();
+		if (($model) !== NULL) {
 			return $model;
 		} else {
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 	}
 
-	/**
-	 * Creates a new Question model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 * @return mixed
-	 */
-
-	/** Паха, это твоё. */
-
-	public function actionCreatejson() {
-		$data = Json::decode(file_get_contents('php://input'));
-		$model = new Question();
-		$model->lft = $model->rgt = $model->depth = $model->author_id = 1;
-		if ($model->load($data) && $model->save()) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-//			$model->refresh();
-		} else {
-			return $this->render('create', [
-				'model' => $model,
-			]);
-		}
-		//die(var_dump($model->save()));
-
-		//return var_dump($model->getErrors());
-	}
-
-	/** Паха, а это рабочее. */
-
 	public function actionCreate() {
 		$model = new Question();
 		$model->lft = $model->rgt = $model->depth = $model->author_id = 1;
-		die(var_dump(Yii::$app->request->post()));
-		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-			return $this->redirect(['view', 'id' => $model->question_id]);
+		if ($model->load(Yii::$app->request->post(), '') && $model->validate()) {
+			if($model->save()) {
+				if (Yii::$app->request->isAjax) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+
+					return $this->findModel($model->question_id, true);
+				} else {
+					return $this->redirect(['test', 'view', 'id' => $model->test_id]);
+				}
+			} else {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+
+				return $model->getErrors();
+			}
 		} else {
 			return $this->render('create', [
 				'model' => $model,
@@ -125,9 +85,21 @@ class QuestionController extends Controller
 	 */
 	public function actionUpdate($id) {
 		$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post(), '') && $model->validate()) {
+			if($model->save()) {
+				$model = $this->findModel($id, true);
+				if (Yii::$app->request->isAjax) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
 
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->question_id]);
+					return $model;
+				} else {
+					return $this->redirect(['view', 'id' => $model->question_id]);
+				}
+			} else {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+
+				return $model->getErrors();
+			}
 		} else {
 			return $this->render('update', [
 				'model' => $model,
@@ -144,8 +116,12 @@ class QuestionController extends Controller
 	 * @return mixed
 	 */
 	public function actionDelete($id) {
-		$this->findModel($id)->delete();
-
-		return $this->redirect(['index']);
+		$r = $this->findModel($id)->delete();
+		if(Yii::$app->request->isAjax) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $r;
+		} else {
+			return $this->redirect(['index']);
+		}
 	}
 }

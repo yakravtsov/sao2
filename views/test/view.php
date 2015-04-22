@@ -12,17 +12,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Тесты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-
-<script>
-	/** global angular */
-//	angular.module('sao').
-</script>
 <div class="test-view" ng-app="sao" ng-controller="TestController"
      ng-init='initModel(<?= \yii\helpers\BaseJson::encode($model) ?>)'>
-	<!--    <h1 style="color: red" ng-bind="test|json"></h1>-->
 	<? Modal::begin([
 	'header' => '<h2 ng-bind="modal.getHeader()"></h2>',
-	//'options' => ['class' => 'modal-lg'],
 	'size' => 'modal-lg',
 	'options' => ['data-backdrop'=>'static'],
 	'toggleButton' => false
@@ -34,10 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	Modal::end();
 	?>
 	<h1><?= Html::encode($this->title) ?></h1>
-
-	<p>
-		<?//= $model->description ?>
-	</p>
 
 	<?= Tabs::widget([
 		'items' => [
@@ -93,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label'   => 'Вопросы',
 
-				'content' => $this->render('@app/views/question/list', ['questions' => $questions,'questionModel' => $questionModel,'test_id'=>$model['test_id']])
+				'content' => $this->render('@app/views/question/list', ['questions'=>$questions, 'questionModel' => $questionModel,'test_id'=>$model['test_id']])
 				,
 				'active' => true,
 				//'headerOptions' => '',

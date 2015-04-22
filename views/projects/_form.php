@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 
+use \app\models\Project;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 /* @var $companies app\models\Project */
@@ -37,8 +39,23 @@ use kartik\select2\Select2;
 		     ]
 	     ]); ?>
 
+	<?
+	$hiddenCompetencies = '';
+	$hiddenTests = '';
+
+	if($model->isNewRecord){
+		$hiddenCompetencies = 'hidden';
+	} else {
+		if($model->type == Project::TYPE_TEST){
+			$hiddenCompetencies = 'hidden';
+		} else {
+			$hiddenTests = 'hidden';
+		}
+	}
+	?>
+
 	<?=
-	$form->field($model, 'tests', ['options' => ['class' => 'input-tests']])->widget(Select2::classname(), [
+	$form->field($model, 'tests', ['options' => ['class' => 'input-tests ' . $hiddenTests]])->widget(Select2::classname(), [
 		'model'     => $model,
 		'attribute' => 'tests',
 		'data'      => $tests,
@@ -46,7 +63,7 @@ use kartik\select2\Select2;
 	]); ?>
 
 	<?=
-	$form->field($model, 'competencies', ['options' => ['class' => 'input-competencies hidden']])
+	$form->field($model, 'competencies', ['options' => ['class' => 'input-competencies ' . $hiddenCompetencies]])
 	     ->widget(Select2::classname(), [
 		     'model'     => $model,
 		     'attribute' => 'tests',
@@ -70,14 +87,24 @@ use kartik\select2\Select2;
 
 	<?= $form->field($model, 'report_type')->textInput() ?>
 
-	<?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+	<?= $form->field($model, 'reportTypes')->checkboxList($model->getReportValues(), ['separator'   => '<br>',
+	                                                                                  'itemOptions' => [
+		                                                                                  //'label' => '',
+		                                                                                  'labelOptions' => ['style' => 'font-weight:normal;']
+	                                                                                  ]]) ?>
 
-	<?= $form->field($model, 'reportTypes')->checkboxList($model->getReportValues()) ?>
+	<?= $form->field($model, 'notify')->checkboxList($model->getNotifyValues(), ['separator'   => '<br>',
+	                                                                                  'itemOptions' => [
+		                                                                                  //'label' => '',
+		                                                                                  'labelOptions' => ['style' => 'font-weight:normal;']
+	                                                                                  ]]) ?>
+
+	<?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
 	<? //= $form->field($model, 'settings')->textInput() ?>
 
-	<div class="form-group">
-		<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	<div class="form-group text-center">
+		<?= Html::submitButton($model->isNewRecord ? Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Создать проект' : Html::tag('i', '', ['class' => 'glyphicon glyphicon-ok']) . ' Сохранить изменения', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 	</div>
 
 	<?php ActiveForm::end(); ?>
