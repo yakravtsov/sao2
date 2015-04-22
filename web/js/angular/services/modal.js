@@ -1,18 +1,17 @@
 angular.module('sao').factory('modal', function () {
 	var	 _header = '';
-	var _object = {}, _objectTemplate={}, _isEdit=false, _tempObject = {};
+	var _object = {}, _objectTemplate={}, _isEdit=false;
 	return {
 		show: function(object, header, objectTemplate) {
-			_object = object;
-			for (var key in object){
-				_objectTemplate[key]=object[key];
+			_objectTemplate = {};
+			_object = angular.copy(object);
+			for (var key in _object){
+				_objectTemplate[key]=_object[key];
 			}
-//			_objectTemplate = object;
 			if(!angular.isUndefined(header)){
 				this.setHeader(header);
 			}
 			if(!angular.isUndefined(objectTemplate)){
-//				_objectTemplate=objectTemplate;
 				_isEdit=true;
 			}
 		},
@@ -32,6 +31,11 @@ angular.module('sao').factory('modal', function () {
 				}
 			}
 			return true;
+		},
+		clear: function() {
+			_object = {};
+			_objectTemplate = {};
+			_isEdit=false;
 		}
 	}
 });

@@ -12,6 +12,8 @@ use app\models\Project;
  */
 class ProjectsSearch extends Project
 {
+    public $companies;
+
     /**
      * @inheritdoc
      */
@@ -19,7 +21,7 @@ class ProjectsSearch extends Project
     {
         return [
             [['project_id', 'author_id', 'report_type', 'settings'], 'integer'],
-            [['created', 'updated', 'date_start', 'date_end', 'description'], 'safe'],
+            [['created', 'updated', 'date_start', 'date_end', 'description','name','companies'], 'safe'],
         ];
     }
 
@@ -43,9 +45,18 @@ class ProjectsSearch extends Project
     {
         $query = Project::find();
 
+        $query->joinWith(['companies']);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['companies'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+            'asc' => ['company.name' => SORT_ASC],
+            'desc' => ['company.name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -64,9 +75,12 @@ class ProjectsSearch extends Project
             'date_end' => $this->date_end,
             'report_type' => $this->report_type,
             'settings' => $this->settings,
+            //'companies' => $this->companies
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'company.name', $this->companies]);
 
         return $dataProvider;
     }

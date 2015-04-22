@@ -104,10 +104,7 @@ class TestController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $data = Json::decode(file_get_contents('php://input'));
-        $model->load($data);
-//        die(var_dump($model->load(['Test' => $data])));
-        if ($data && $model->load($data)) {
+        if (Yii::$app->request->post() && $model->load(Yii::$app->request->post())) {
             if (!$model->save()) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 $model->refresh();
@@ -117,11 +114,11 @@ class TestController extends Controller
                 return $this->redirect(['view', 'id' => $model->test_id]);
             }
         } else {
-
-            return $this->render('update', [
+            return $this->render('view', [
                 'model' => $model,
-                'questionModel'=>new Question()
-            ]);
+                'questionModel'=>new Question(),
+				'scalesModel' => new Scale(),
+				]);
         }
     }
 
@@ -133,23 +130,30 @@ class TestController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id, false)->delete();
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Test model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Test the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
+	/**
+	 * Finds the Test model based on its primary key value.
+	 * If the model is not found, a 404 HTTP exception will be thrown.
+	 *
+	 * @param integer $id
+	 * @param bool    $asArray
+	 *
+	 * @throws \yii\web\NotFoundHttpException
+	 * @return Test the loaded model
+	 */
+    protected function findModel($id, $asArray=true)
     {
-		$model = Test::find()->joinWith(['questions.answers.effects', 'scales', 'author'])->where(['test.test_id'=>$id])->asArray()->one();
-		if ($model !== null) {
-            return $model;
+		$model = Test::find()->joinWith(['questions.answers.effects', 'scales', 'author'])->where(['test.test_id'=>$id]);
+		if($asArray) {
+			$model->asArray();
+		}
+		$result = $model->one();
+		if ($result !== null) {
+            return $result;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

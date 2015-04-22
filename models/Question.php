@@ -36,6 +36,8 @@ class Question extends ActiveRecord
 	const TYPE_RATING      = 32;
 	const TYPE_CORRELATION = 64;
 
+	private $_answersToSave = [];
+
 	/**
 	 * @inheritdoc
 	 */
@@ -66,6 +68,7 @@ class Question extends ActiveRecord
 	 */
 	public function rules() {
 		return [
+			[['answers'], 'safe'],
 //			[['lft', 'rgt', 'depth'], 'required'],
 			[['type', 'test_id', 'root', 'lft', 'rgt', 'depth'], 'integer'],
 			[['name'], 'string', 'max' => 255]
@@ -102,7 +105,26 @@ class Question extends ActiveRecord
 	 * @return \yii\db\ActiveQuery
 	 */
 	public function getAnswers() {
-		return $this->hasMany(Answer::className(), ['question_id' => 'question_id'])->indexBy('answer_id');
+		return $this->hasMany(Answer::className(), ['question_id' => 'question_id'])/*->indexBy('answer_id')*/;
+	}
+
+	public function setAnswers($answers) {
+		foreach($answers as $answer) {
+			$model = new Answer;
+			$model->load($answer, '');
+			$model->lft = $model->rgt = $model->root = $model->depth = 1;
+			$this->_answersToSave[] = $model;
+		}
+
+		return $this;
+	}
+
+	public function afterSave($insert, $changedAttributes) {
+		$this->unlinkAll('answers', true);
+		foreach($this->_answersToSave as $answer) {
+			$this->link('answers', $answer);
+		}
+		parent::afterSave($insert, $changedAttributes);
 	}
 
 

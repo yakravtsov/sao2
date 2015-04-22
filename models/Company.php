@@ -93,6 +93,6 @@ class Company extends ActiveRecord
      */
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['company_id' => 'user_id']);
+        return $this->hasMany(User::className(), ['company_id' => 'company_id']);
     }
 }

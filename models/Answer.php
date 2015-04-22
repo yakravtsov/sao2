@@ -92,7 +92,7 @@ class Answer extends \yii\db\ActiveRecord
     }
 
 	public function getEffects(){
-		return $this->hasMany(AnswerScale::className(), ['answer_id'=>'answer_id']);
+		return $this->hasMany(AnswerScale::className(), ['answer_id'=>'answer_id'])/*->indexBy('scale_id')*/;
 	}
 
 }
